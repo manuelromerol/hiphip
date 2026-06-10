@@ -1,6 +1,6 @@
 import {test, expect} from '@playwright/test';
 import {RequestQuotePage} from '../pages/RequestQuotePage';
-import {ContactData, ProjectData} from '../data/FormData';
+import {CompanyData, ContactData, ProjectData} from '../data/FormData';
 import {DIALOG_MESSAGES} from "../data/constansts";
 
 test('should submit request quote form successfully', async ({page}) => {
@@ -11,11 +11,14 @@ test('should submit request quote form successfully', async ({page}) => {
         lastName: 'TestLastName1',
         email: 'TestEmail1@test.com',
         phone: 'TestPhone1',
-        company: 'TestCompany'
+    });
+
+    const companyInfo = new CompanyData({
+        company: 'TestCompany',
+        industry: 'ecommerce'
     });
 
     const projectInfo = new ProjectData({
-        industry: 'ecommerce',
         timeline: 'immediate',
         volume: '10000 units',
         details: 'TestProject Details'
@@ -25,6 +28,7 @@ test('should submit request quote form successfully', async ({page}) => {
     await expect(page).toHaveURL(/\/rfq/);
 
     await requestQuotePage.fillContactInformation(contactInfo);
+    await requestQuotePage.fillCompanyInformation(companyInfo);
     await requestQuotePage.checkWarehousing();
     await requestQuotePage.fillProjectDetails(projectInfo);
 

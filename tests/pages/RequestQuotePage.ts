@@ -1,5 +1,5 @@
 import {Locator, Page, expect} from '@playwright/test';
-import {ContactData, ProjectData} from '../data/FormData';
+import {CompanyData, ContactData, ProjectData} from '../data/FormData';
 
 export class RequestQuotePage {
     private readonly page: Page;
@@ -40,7 +40,11 @@ export class RequestQuotePage {
         await this.lastNameInput.fill(contact.lastName);
         await this.emailInput.fill(contact.email);
         await this.phoneInput.fill(contact.phone);
-        await this.companyNameInput.fill(contact.company);
+    }
+
+    async fillCompanyInformation(company: CompanyData): Promise<void> {
+        await this.companyNameInput.fill(company.company);
+        await this.industryDropdown.selectOption(company.industry);
     }
 
     async checkWarehousing(): Promise<void> {
@@ -49,7 +53,6 @@ export class RequestQuotePage {
     }
 
     async fillProjectDetails(project: ProjectData): Promise<void> {
-        await this.industryDropdown.selectOption(project.industry);
         await this.timelineDropdown.selectOption(project.timeline);
         await this.estimatedVolumeInput.fill(project.volume);
         await this.projectDetailsInput.fill(project.details);
